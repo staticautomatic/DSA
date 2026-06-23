@@ -2,7 +2,7 @@
  * Class representing a "Dynamic Array" data structure.
  * Uses a typed array (Uint32Array) as internal storage.
  */
-class DArray {
+export class DArray {
   // Private fields
   /** @private @type {number} Current number of elements in the array */
   #size = 0;
@@ -147,7 +147,7 @@ class DArray {
    * Returns the current capacity of the array.
    * @returns {number} The capacity.
    */
-  capacity() {
+  get capacity() {
     // TODO: Return #capacity.
     return this.#capacity;
   }
