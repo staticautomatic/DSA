@@ -5,7 +5,7 @@ class CircularQueue {
   #front;
   #size;
   constructor(capacity = 8) {
-    if (!Number.isInteger(capacity) || capacity < 0)
+    if (!Number.isInteger(capacity) || capacity <= 0)
       throw new Error("The capacity must be a positive integer.");
 
     this.#data = new DArray(capacity);
@@ -30,7 +30,7 @@ class CircularQueue {
   clear() {
     for (let i = this.#front; i < this.#size + this.#front; ++i) {
       const idx = i % this.#data.capacity;
-      this.#data[idx] = undefined;
+      this.#data.setValue(idx, undefined);
     }
     this.#front = 0;
     this.#size = 0;
@@ -42,15 +42,15 @@ class CircularQueue {
     if (this.#size === this.#data.capacity) this.#grow();
 
     const idx = (this.#front + this.#size) % this.#data.capacity;
-    this.#data[idx] = value;
+    this.#data.setValue(idx, value);
     ++this.#size;
   }
 
   dequeue() {
     if (this.isEmpty()) throw new Error("The circular queue is empty.");
 
-    const val = this.#data[this.#front];
-    this.#data[this.#front] = undefined;
+    const val = this.#data.at(this.#front);
+    this.#data.setValue(this.#front, undefined);
     this.#front = (this.#front + 1) % this.#data.capacity;
     --this.#size;
     return val;
@@ -58,14 +58,14 @@ class CircularQueue {
 
   front() {
     if (this.isEmpty()) throw new Error("The circular queue is empty.");
-    return this.#data[this.#front];
+    return this.#data.at(this.#front);
   }
 
   back() {
     if (this.isEmpty()) throw new Error("The circular queue is empty.");
 
     const idx = (this.#front + this.#size - 1) % this.#data.capacity;
-    return this.#data[idx];
+    return this.#data.at(idx);
   }
 
   /* ================= Internal Resize ================= */
@@ -76,7 +76,7 @@ class CircularQueue {
 
     for (let i = 0; i < this.#size; ++i) {
       const localIdx = (this.#front + i) % this.#data.capacity;
-      newCQueue[i] = this.#data[localIdx];
+      newCQueue.push_back(this.#data.at(localIdx));
     }
 
     this.#front = 0;
@@ -89,7 +89,7 @@ class CircularQueue {
     const arr = new Array(this.#size);
     for (let i = 0; i < this.#size; ++i) {
       const idx = (this.#front + i) % this.#data.capacity;
-      arr[i] = this.#data[idx];
+      arr[i] = this.#data.at(idx);
     }
     return arr;
   }
@@ -102,12 +102,14 @@ class CircularQueue {
   [Symbol.iterator]() {
     let i = 0;
     let idx = this.#front;
+    const size = this.#size;
+    const cap = this.#data.capacity;
     return {
       next: () => {
-        if (i < this.#size) {
-          idx %= this.#data.capacity;
+        if (i < size) {
+          idx %= cap;
           ++i;
-          return { value: this.#data[idx++], done: false };
+          return { value: this.#data.at(idx++), done: false };
         } else {
           return { value: undefined, done: true };
         }
