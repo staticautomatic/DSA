@@ -26,7 +26,11 @@ export class DArray {
     // TODO: Initialize #capacity and #arr. Add validation for initialCapacity.
     if(!Number.isInteger(initialCapacity) || initialCapacity < 0) throw new TypeError("The capacity must be a positive number");
     this.#capacity = initialCapacity;
-    this.#arr = new Uint32Array(this.#capacity);
+    this.#arr = new Uint32Array(this.#capacity).fill(0);
+  }
+
+  get capacity() {
+    return this.#capacity;
   }
 
   /**
@@ -38,7 +42,7 @@ export class DArray {
     // TODO: Create a new internal array, copy old data, fill the remainder with 'fill', update references.
     if(newCapacity < this.#size) throw new Error("The capasity must be > size");
     this.#capacity = newCapacity;
-    let newArray = new Array(this.#capacity).fill(fill);
+    let newArray = new Uint32Array(this.#capacity).fill(fill);
     for(let i = 0; i < this.#size; ++i) {
         newArray[i] = this.#arr[i];
     }
@@ -179,7 +183,7 @@ export class DArray {
    */
   reserve(n) {
     // TODO: Call resize if n is greater than the current capacity.
-    if(n > this.#capacity) this.resize(this.#capacity * this.CAP_EXPONENT);
+    if(n > this.#capacity) this.resize(n);
   }
 
   /**
