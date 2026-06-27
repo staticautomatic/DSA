@@ -38,10 +38,26 @@ class Stack {
   }
 
   toArray() {
-    return this.#data.toArray();
+    const arr = this.#data.toArray();
+    return arr.reverse();
   }
 
   [Symbol.iterator]() {
-    return this.#data[Symbol.iterator]();
+    const arr = this.#data.toArray();
+
+    let idx = arr.length;
+    return {
+      next: () => {
+        if(idx >= 0) {
+          return {value: arr[idx--], done: false};
+        } else {
+          return {value: undefined, done: true};
+        }
+      },
+      [Symbol.iterator]() {
+        return this;
+      }
+    }
+  
   }
 }
