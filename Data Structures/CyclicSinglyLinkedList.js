@@ -29,7 +29,6 @@ class CyclicSLL {
     }
 
     clear() {
-        if(this.empty()) throw new Error("The list is already empty.");
         this.#head = null;
         this.#size = 0;
     }
@@ -196,8 +195,7 @@ class CyclicSLL {
     }
 
     reverse() {
-        if(this.empty()) throw new Error("The list is empty.");
-        if(this.#head.next === this.#head) return;
+        if(this.#head.next === this.#head || this.empty()) return;
 
         let prev = this.#head;
         let curr = this.#head.next;
