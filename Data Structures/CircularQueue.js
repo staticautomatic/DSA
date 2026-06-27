@@ -71,7 +71,7 @@ class CircularQueue {
   /* ================= Internal Resize ================= */
 
   #grow() {
-    const newCap = this.#data.capacity * this.#data.CAP_EXPONENT;
+    const newCap = this.#data.capacity * 2;
     const newCQueue = new DArray(newCap);
 
     for (let i = 0; i < this.#size; ++i) {
