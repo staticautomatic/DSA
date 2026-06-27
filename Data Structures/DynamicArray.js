@@ -22,9 +22,9 @@ export class DArray {
    * @param {number} initialCapacity - Initial capacity of the array (must be a strictly positive integer).
    * @throws {TypeError} If initialCapacity is not a positive integer.
    */
-  constructor(initialCapacity) {
+  constructor(initialCapacity = 8) {
     // TODO: Initialize #capacity and #arr. Add validation for initialCapacity.
-    if(!Number.isInteger(initialCapacity) || initialCapacity < 0) throw new TypeError("The capacity must be a positive number");
+    if(!Number.isInteger(initialCapacity) || initialCapacity <= 0) throw new TypeError("The capacity must be a positive number");
     this.#capacity = initialCapacity;
     this.#arr = new Uint32Array(this.#capacity).fill(0);
   }
@@ -151,7 +151,7 @@ export class DArray {
    * Returns the current capacity of the array.
    * @returns {number} The capacity.
    */
-  get capacity() {
+  capacity() {
     // TODO: Return #capacity.
     return this.#capacity;
   }
@@ -216,7 +216,7 @@ export class DArray {
   insert(pos, value) {
     // TODO: Implement insertion with right-shifting (and potential resizing).
     if(!Number.isInteger(pos)) throw new Error("The index must be an integer");
-    if(pos < 0 || pos >= this.#size) throw new Error("Invalid index");
+    if(pos < 0 || pos > this.#size) throw new Error("Invalid index");
     if(typeof value !== "number") throw new Error("The element must be a number");
     if(this.#size === this.#capacity) this.resize(this.#capacity * this.CAP_EXPONENT);
     for(let i = this.#size - 1; i >= pos; --i) {
@@ -440,3 +440,7 @@ export class DArray {
   }
 }
 
+let da = new DArray();
+
+da.insert(0, 4);
+console.log(da.toArray());
