@@ -171,7 +171,7 @@ class SinglyLinkedList {
     }
 
     reverse() {
-        if (this.empty() || !this.#head.next) return this.#head;
+        if (this.empty() || !this.#head.next) return;
         let prev = null;
         let curr = this.#head;
 
